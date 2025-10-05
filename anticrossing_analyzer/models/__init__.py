@@ -1,0 +1,1 @@
+"""Theoretical models and fitting functions."""
