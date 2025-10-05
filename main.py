@@ -165,7 +165,7 @@ class AnticrossingAnalyzer:
             
             ax.plot(self.frequencies, s21_spectrum, 
                    color=colors[i], linewidth=2,
-                   label=f'H = {field_value:.1f} {DATA_SETTINGS["field_units"]}')
+                   label=f'H = {field_value:.0f} {DATA_SETTINGS["field_units"]}')
         
         ax.set_xlabel(f'Frequency ({DATA_SETTINGS["frequency_units"]})', fontsize=12)
         ax.set_ylabel(f'S₂₁ ({DATA_SETTINGS["s_parameter_units"]})', fontsize=12)
@@ -188,7 +188,7 @@ class AnticrossingAnalyzer:
         print(f"File: {self.data_file}")
         print(f"Data shape: {self.data_loader.shape}")
         print(f"Frequency range: {self.frequencies.min():.3f} - {self.frequencies.max():.3f} {DATA_SETTINGS['frequency_units']}")
-        print(f"Field range: {self.fields.min():.1f} - {self.fields.max():.1f} {DATA_SETTINGS['field_units']}")
+        print(f"Field range: {self.fields.min():.0f} - {self.fields.max():.0f} {DATA_SETTINGS['field_units']}")
         print(f"S21 range: {self.s_parameters.min():.1f} - {self.s_parameters.max():.1f} {DATA_SETTINGS['s_parameter_units']}")
         print("="*50)
 

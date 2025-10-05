@@ -18,10 +18,9 @@ PLOT_SETTINGS = {
 # Data processing settings
 DATA_SETTINGS = {
     'frequency_units': 'GHz',
-    'field_units': 'mT', 
+    'field_units': 'Oe',  # Oersted - units for magnetic field H
     's_parameter_units': 'dB',
-    'interpolation_method': 'cubic',
-    'smoothing_window': 3
+    'smoothing_window': 3  # For trajectory smoothing only, not raw data
 }
 
 # Fitting settings
@@ -44,11 +43,13 @@ FILE_FORMATS = {
 
 # Physical constants and default parameter ranges
 PHYSICS = {
-    'gamma_gyro': 28.0,  # Gyromagnetic ratio in GHz/T
+    # FMR relation: f = (γ/2π) * g * H, where γ/2π ≈ 2.8 MHz/Oe for free electron
+    'gamma_gyro': 2.8,  # Gyromagnetic ratio γ/2π in MHz/Oe 
+    'g_factor': 2.0,  # Landé g-factor for free electron
     'typical_coupling': 1e-3,  # Typical G value in GHz
     'typical_linewidth': 1e-3,  # Typical gamma in GHz
     'frequency_range': (1.0, 20.0),  # GHz
-    'field_range': (0.0, 1000.0)  # mT
+    'field_range': (0.0, 10000.0)  # Oe (0-1 Tesla ≈ 0-10000 Oe)
 }
 
 # GUI settings

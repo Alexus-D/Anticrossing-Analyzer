@@ -79,7 +79,7 @@ class DataLoader:
                 
             print(f"Loaded data: {len(self.frequencies)} frequencies, {len(self.fields)} field points")
             print(f"Frequency range: {self.frequencies.min():.3f} - {self.frequencies.max():.3f} {DATA_SETTINGS['frequency_units']}")
-            print(f"Field range: {self.fields.min():.1f} - {self.fields.max():.1f} {DATA_SETTINGS['field_units']}")
+            print(f"Field range: {self.fields.min():.0f} - {self.fields.max():.0f} {DATA_SETTINGS['field_units']}")
             print(f"S-parameter range: {self.s_parameters.min():.1f} - {self.s_parameters.max():.1f} {DATA_SETTINGS['s_parameter_units']}")
             
             return self.frequencies, self.fields, self.s_parameters
@@ -147,7 +147,7 @@ class DataLoader:
         """
         # Create test frequency and field arrays
         frequencies = np.linspace(5.0, 7.0, 101)  # 5-7 GHz
-        fields = np.linspace(100, 300, 81)  # 100-300 mT
+        fields = np.linspace(1000, 3000, 81)  # 1000-3000 Oe (≈ 0.1-0.3 T)
         
         # Create artificial S21 data with simple resonance features
         freq_mesh, field_mesh = np.meshgrid(frequencies, fields)
@@ -158,8 +158,8 @@ class DataLoader:
         cavity_response = -20 / (1 + ((freq_mesh - cavity_freq) / cavity_width)**2)
         
         # FMR resonance (field-dependent): f = gamma * H / (2*pi)
-        # Use simplified relation: f_fmr = 0.028 * H (GHz = 0.028 * mT)
-        fmr_freq = 0.028 * field_mesh / 1000 * 1000  # Convert properly
+        # Use relation: f_fmr = 0.0028 * H (GHz = 0.0028 * Oe, γ/2π ≈ 2.8 MHz/Oe)
+        fmr_freq = 0.0028 * field_mesh  # GHz = 0.0028 * Oe
         fmr_width = 0.03
         fmr_response = -15 / (1 + ((freq_mesh - fmr_freq) / fmr_width)**2)
         
