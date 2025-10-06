@@ -16,6 +16,7 @@ project_root = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, project_root)
 
 from anticrossing_analyzer.core.data_loader import DataLoader
+from anticrossing_analyzer.visualization.interactive_interface import create_interactive_editor
 from anticrossing_analyzer.config.settings import PLOT_SETTINGS, DATA_SETTINGS
 
 
@@ -139,6 +140,33 @@ class AnticrossingAnalyzer:
         
         plt.show()
     
+    def start_interactive_editor(self) -> None:
+        """
+        Start interactive trajectory editor.
+        
+        Launches matplotlib-based GUI for marking trajectories and masks.
+        """
+        if not self.data_loader.is_loaded:
+            print("No data loaded. Use load_data() first.")
+            return
+        
+        print("\n" + "="*50)
+        print("STARTING INTERACTIVE TRAJECTORY EDITOR")
+        print("="*50)
+        
+        # Create interactive interface
+        interface = create_interactive_editor(
+            self.frequencies, self.fields, self.s_parameters
+        )
+        
+        # Store reference for later use
+        self.interactive_interface = interface
+        
+        # Show the interface
+        interface.show()
+        
+        return interface
+    
     def show_example_spectra(self, n_spectra: int = 5) -> None:
         """
         Show example S21 spectra at different magnetic fields.
@@ -195,9 +223,9 @@ class AnticrossingAnalyzer:
 
 def main():
     """
-    Main function demonstrating Stage 1 functionality.
+    Main function demonstrating Stage 2 functionality.
     """
-    print("Anticrossing Analyzer - Stage 1 Demo")
+    print("Anticrossing Analyzer - Stage 2 Demo")
     print("=====================================")
     
     # Create analyzer instance
@@ -218,16 +246,27 @@ def main():
     # Print data information
     analyzer.print_data_info()
     
-    # Show contour plot
-    print("\n3. Displaying contour plot...")
+    # Show basic contour plot first
+    print("\n3. Displaying basic contour plot...")
     analyzer.show_contour_plot(save_figure=True)
     
-    # Show example spectra
-    print("\n4. Displaying example spectra...")
-    analyzer.show_example_spectra(n_spectra=5)
+    # Launch interactive trajectory editor
+    print("\n4. Launching interactive trajectory editor...")
+    print("   ➤ Use mouse clicks to mark trajectories")
+    print("   ➤ Press 'H' for help when the plot window is active")
+    print("   ➤ Press 'C', 'F', 'M' to switch between Cavity, FMR, and Mask modes")
+    print("   ➤ Close the plot window to continue...")
     
-    print("\n✓ Stage 1 completed successfully!")
-    print("\nNext: Implement interactive trajectory editor (Stage 2)")
+    interface = analyzer.start_interactive_editor()
+    
+    # Show final summary after interaction
+    print("\n5. Final trajectory summary:")
+    if hasattr(analyzer, 'interactive_interface'):
+        analyzer.interactive_interface.get_editor().print_summary()
+    
+    print("\n✓ Stage 2 completed successfully!")
+    print("✓ Interactive trajectory editor is fully functional!")
+    print("\nNext: Implement test data generation (Stage 3)")
 
 
 if __name__ == "__main__":
